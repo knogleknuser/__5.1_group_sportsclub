@@ -18,8 +18,8 @@ public class Main {
 
         showMembers(members);
         showMemberById(memberMapper, 13);
-        int newMemberId = insertMember(memberMapper);
-        deleteMember(newMemberId, memberMapper);
+        //int newMemberId = insertMember(memberMapper);
+        //deleteMember(newMemberId, memberMapper);
         showMembers(members);
         updateMember(13, memberMapper);
 

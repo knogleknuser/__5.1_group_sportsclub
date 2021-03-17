@@ -134,7 +134,7 @@ public class MemberMapper {
         public boolean updateMember(Member member) {
             boolean result = false;
             String sql =    "update member " +
-                            "set name = ?, address = ?, zip = ?, gender = ?, year = ? " +
+                            "set name = ?, address = ?, zip = ?, gender = ?, year = ?, updated = ? " +
                             "where member_id = ?";
             try (Connection connection = database.connect()) {
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -143,7 +143,9 @@ public class MemberMapper {
                     ps.setInt(3, member.getZip());
                     ps.setString(4, member.getGender());
                     ps.setInt(5, member.getYear());
-                    ps.setInt(6, member.getMemberId());
+                    java.sql.Timestamp t = new java.sql.Timestamp(System.currentTimeMillis());
+                    ps.setTimestamp(6,t);
+                    ps.setInt(7, member.getMemberId());
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected == 1){
                         result = true;
