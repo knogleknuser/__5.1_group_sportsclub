@@ -34,6 +34,8 @@ querying in Workbench to fine tune your sql-statements:
 11) Find the total sum of income for each team
 12) Find the average payment for each team
 
+Hint: It might be useful to create a view with lots of joins
+
 ### Add a RegistrationMapper
 
 13) Add a new class in the persistence package called "RegistrationMapper"
@@ -41,7 +43,7 @@ querying in Workbench to fine tune your sql-statements:
     Your test could be to add the team called "ten01" to member 13. You should probably let your self be inspired 
     by the insertMember method in the MemberMapper.
 15) Add a new method to the RegistrationMapper called getAllRegistrations() that returns an arraylist of registrations.
-16) You might want to pimp the getAllRegistrations to that you can print out more
+16) You might want to pimp the getAllRegistrations so that you can print out more
     than just the (member_id, team_id) data. It would be lovely with a list of member names
     and team name etc. Use you imagination.
 
