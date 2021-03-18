@@ -1,6 +1,8 @@
 package persistence;
 
 import entities.Member;
+import exceptions.DatabaseException;
+import exceptions.IllegalInputException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class MemberMapper {
             this.database = database;
         }
 
-        public List<Member> getAllMembers() {
+        public List<Member> getAllMembers() throws DatabaseException {
 
             List<Member> memberList = new ArrayList<>();
 
@@ -36,16 +38,15 @@ public class MemberMapper {
                         memberList.add(new Member(memberId, name, address, zip, city, gender, year));
                     }
                 } catch (SQLException throwables) {
-                    // TODO: Make own throwable exception and let it bubble upwards
-                    throwables.printStackTrace();
+                    throw new DatabaseException("Could not get all members from database");
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException ex) {
+                throw new DatabaseException("Could not establish connection to database");
             }
             return memberList;
         }
 
-        public Member getMemberById(int memberId) {
+        public Member getMemberById(int memberId) throws DatabaseException {
             Member member = null;
 
             String sql =  "select member_id, name, address, m.zip, gender, city, year " +
@@ -65,40 +66,41 @@ public class MemberMapper {
                         String gender = rs.getString("gender");
                         int year = rs.getInt("year");
                         member = new Member(memberId, name, address, zip, city, gender, year);
+                    } else {
+                        throw new DatabaseException("Member with id = " + memberId + " is not found");
                     }
-                } catch (SQLException throwables) {
-                    // TODO: Make own throwable exception and let it bubble upwards
-                    throwables.printStackTrace();
+                } catch (SQLException ex) {
+                    throw new DatabaseException("Could not find member with id = " + memberId + " in database");
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException ex) {
+                throw new DatabaseException("Could not establish connection to database");
             }
             int a = 1;
             return member;
         }
 
-        public boolean deleteMember(int member_id){
+        public boolean deleteMember(int memberId) throws DatabaseException {
             boolean result = false;
             String sql = "delete from member where member_id = ?";
             try (Connection connection = database.connect()) {
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                    ps.setInt(1, member_id);
+                    ps.setInt(1, memberId);
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected == 1){
                         result = true;
+                    } else {
+                        throw new DatabaseException("Member with id = " + memberId + " could not be deleted");
                     }
                 } catch (SQLException throwables) {
-                    // TODO: Make own throwable exception and let it bubble upwards
-                    throwables.printStackTrace();
+                    throw new DatabaseException("Could not delete member with id = " + memberId + " in database");
                 }
             } catch (SQLException throwables) {
-                // TODO: Make own throwable exception and let it bubble upwards
-                throwables.printStackTrace();
+                throw new DatabaseException("Could not establish connection to database");
             }
             return result;
         }
 
-        public Member insertMember(Member member){
+        public Member insertMember(Member member) throws DatabaseException, IllegalInputException {
             boolean result = false;
             int newId = 0;
             String sql = "insert into member (name, address, zip, gender, year) values (?,?,?,?,?)";
@@ -107,11 +109,17 @@ public class MemberMapper {
                     ps.setString(1, member.getName());
                     ps.setString(2, member.getAddress());
                     ps.setInt(3, member.getZip());
-                    ps.setString(4, member.getGender());
+                    if (member.getGender().equals("m") || member.getGender().equals("f")) {
+                        ps.setString(4, member.getGender());
+                    } else {
+                        throw new IllegalInputException("Error inserting new member. Gender should be 'm' or 'f'");
+                    }
                     ps.setInt(5, member.getYear());
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected == 1){
                         result = true;
+                    } else {
+                        throw new DatabaseException("Member with name = " + member.getName() + " could not be inserted into database");
                     }
                     ResultSet idResultset = ps.getGeneratedKeys();
                     if (idResultset.next()){
@@ -121,17 +129,15 @@ public class MemberMapper {
                         member = null;
                     }
                 } catch (SQLException throwables) {
-                    // TODO: Make own throwable exception and let it bubble upwards
-                    throwables.printStackTrace();
+                    throw new DatabaseException("Could not insert member in database");
                 }
             } catch (SQLException throwables) {
-                // TODO: Make own throwable exception and let it bubble upwards
-                throwables.printStackTrace();
+                throw new DatabaseException("Could not establish connection to database");
             }
             return member;
         }
 
-        public boolean updateMember(Member member) {
+        public boolean updateMember(Member member) throws DatabaseException {
             boolean result = false;
             String sql =    "update member " +
                             "set name = ?, address = ?, zip = ?, gender = ?, year = ? " +
@@ -147,14 +153,14 @@ public class MemberMapper {
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected == 1){
                         result = true;
+                    } else {
+                        throw new DatabaseException("Member with id = " + member.getMemberId() + " could not be updated");
                     }
-                } catch (SQLException throwables) {
-                    // TODO: Make own throwable exception and let it bubble upwards
-                    throwables.printStackTrace();
+                } catch (SQLException ex) {
+                    throw new DatabaseException("Could not insert member in database");
                 }
-            } catch (SQLException throwables) {
-                // TODO: Make own throwable exception and let it bubble upwards
-                throwables.printStackTrace();
+            } catch (SQLException ex) {
+                throw new DatabaseException("Could not establish connection to database");
             }
             return result;
         }

@@ -1,7 +1,10 @@
 import entities.Member;
+import exceptions.DatabaseException;
+import exceptions.IllegalInputException;
 import persistence.Database;
 import persistence.MemberMapper;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
@@ -9,36 +12,44 @@ public class Main {
     private final static String USER = "dev";
     private final static String PASSWORD = "ax2";
     private final static String URL = "jdbc:mysql://localhost:3306/sportsclub?serverTimezone=CET&useSSL=false";
+    private static MemberMapper memberMapper;
+    private static Database db;
 
     public static void main(String[] args) {
 
-        Database db = new Database(USER, PASSWORD, URL);
-        MemberMapper memberMapper = new MemberMapper(db);
-        List<Member> members = memberMapper.getAllMembers();
+        try {
+            Database db = new Database(USER, PASSWORD, URL);
+            memberMapper = new MemberMapper(db);
+            try {
+                List<Member> members = memberMapper.getAllMembers();
+                showMembers(members);
+                showMemberById(memberMapper, 13);
+                int newMemberId = insertMember(memberMapper);
+                // deleteMember(newMemberId, memberMapper);
+                showMembers(members);
+                updateMember(13, memberMapper);
+            } catch (DatabaseException | IllegalInputException ex) {
+                System.out.println("Problemer med databasen: " + ex.getMessage());
+            }
+        } catch (ClassNotFoundException ex) {
+            System.out.println("An error has occured: " + ex.getMessage());
+            }
+        }
 
-        showMembers(members);
-        showMemberById(memberMapper, 13);
-        int newMemberId = insertMember(memberMapper);
-        deleteMember(newMemberId, memberMapper);
-        showMembers(members);
-        updateMember(13, memberMapper);
-
-    }
-
-    private static void deleteMember(int memberId, MemberMapper memberMapper) {
+        private static void deleteMember(int memberId, MemberMapper memberMapper)  throws DatabaseException {
         if (memberMapper.deleteMember(memberId)){
             System.out.println("Member with id = " + memberId + " is removed from DB");
         }
     }
 
-    private static int insertMember(MemberMapper memberMapper) {
+    private static int insertMember(MemberMapper memberMapper) throws DatabaseException, IllegalInputException {
         Member m1 = new Member("Ole Olsen", "Banegade 2", 3700, "Rønne", "m", 1967);
         Member m2 = memberMapper.insertMember(m1);
         showMemberById(memberMapper, m2.getMemberId());
         return m2.getMemberId();
     }
 
-    private static void updateMember(int memberId, MemberMapper memberMapper) {
+    private static void updateMember(int memberId, MemberMapper memberMapper) throws DatabaseException {
         Member m1 = memberMapper.getMemberById(memberId);
         m1.setYear(1970);
         if(memberMapper.updateMember(m1)){
@@ -46,7 +57,7 @@ public class Main {
         }
     }
 
-    private static void showMemberById(MemberMapper memberMapper, int memberId) {
+    private static void showMemberById(MemberMapper memberMapper, int memberId)  throws DatabaseException {
         System.out.println("***** Vis medlem nr. 13: *******");
         System.out.println(memberMapper.getMemberById(memberId).toString());
     }

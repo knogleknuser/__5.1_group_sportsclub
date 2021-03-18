@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class Member {
 
     private int memberId;
@@ -83,6 +85,19 @@ public class Member {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Member)) return false;
+        Member member = (Member) o;
+        return getMemberId() == member.getMemberId() && getZip() == member.getZip() && getYear() == member.getYear() && getName().equals(member.getName()) && getAddress().equals(member.getAddress()) && getCity().equals(member.getCity()) && getGender().equals(member.getGender());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMemberId(), getName(), getAddress(), getZip(), getCity(), getGender(), getYear());
     }
 
     @Override
