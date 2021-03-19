@@ -17,12 +17,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 class MemberMapperTest {
 
     private final static String USER = "dev";
     private final static String PASSWORD = "ax2";
-    private final static String URL = "jdbc:mysql://localhost:3306/sportsclub_test?serverTimezone=CET&useSSL=false";
+    private final static String URL = "jdbc:mysql://localhost:3306/sportsclub_test?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false";
 
     private static Database db;
     private static MemberMapper memberMapper;
@@ -88,6 +88,7 @@ class MemberMapperTest {
         assertEquals(true, memberMapper.deleteMember(2));
         assertEquals(2, memberMapper.getAllMembers().size());
     }
+
 
     @Test
     void insertMember() throws DatabaseException, IllegalInputException {

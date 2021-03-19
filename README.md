@@ -53,6 +53,12 @@ that we can make sure that our database queries are working.
     to figure out how to test it correctly. For this
     to work, you will need to use assertThrows and take a close
     look at the exceptionhandling in the deleteMember method.
+    Hint: Try this version: 
+    ```java
+    @Test
+    void deleteMemberUnknownId() throws DatabaseException {
+        assertThrows(DatabaseException.class, () -> memberMapper.deleteMember(12312));
+    } ```
 14) Create a test in which you will try to insert a new member
     with illegal types. It could be that you try to insert a 
     member with an illegal gender type. "x" for example. For this

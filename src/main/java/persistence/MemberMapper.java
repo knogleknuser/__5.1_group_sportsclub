@@ -41,6 +41,7 @@ public class MemberMapper {
                     throw new DatabaseException("Could not get all members from database");
                 }
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 throw new DatabaseException("Could not establish connection to database");
             }
             return memberList;
@@ -131,7 +132,8 @@ public class MemberMapper {
                 } catch (SQLException throwables) {
                     throw new DatabaseException("Could not insert member in database");
                 }
-            } catch (SQLException throwables) {
+            } catch (SQLException ex) {
+                ex.printStackTrace();
                 throw new DatabaseException("Could not establish connection to database");
             }
             return member;
