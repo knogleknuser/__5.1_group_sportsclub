@@ -58,7 +58,8 @@ that we can make sure that our database queries are working.
     @Test
     void deleteMemberUnknownId() throws DatabaseException {
         assertThrows(DatabaseException.class, () -> memberMapper.deleteMember(12312));
-    } ```
+    } 
+    ```
 14) Create a test in which you will try to insert a new member
     with illegal types. It could be that you try to insert a 
     member with an illegal gender type. "x" for example. For this
