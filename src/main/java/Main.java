@@ -8,7 +8,7 @@ public class Main {
 
     private final static String USER = "dev";
     private final static String PASSWORD = "ax2";
-    private final static String URL = "jdbc:mysql://localhost:3306/sportsclub?serverTimezone=CET&useSSL=false";
+    private final static String URL = "jdbc:mysql://localhost:3306/sportsclub?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true";
 
     public static void main(String[] args) {
 
@@ -18,11 +18,13 @@ public class Main {
 
         showMembers(members);
         showMemberById(memberMapper, 13);
-        int newMemberId = insertMember(memberMapper);
-        deleteMember(newMemberId, memberMapper);
-        showMembers(members);
-        updateMember(13, memberMapper);
 
+        /*  
+            int newMemberId = insertMember(memberMapper);
+            deleteMember(newMemberId, memberMapper);
+            showMembers(members);
+            updateMember(13, memberMapper);
+        */
     }
 
     private static void deleteMember(int memberId, MemberMapper memberMapper) {
