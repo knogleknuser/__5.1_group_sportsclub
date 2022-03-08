@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -17,11 +16,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 class MemberMapperTest {
 
-    private final static String USER = "dev";
-    private final static String PASSWORD = "ax2";
+    private final static String USER = "root";
+    private final static String PASSWORD = "root";
     private final static String URL = "jdbc:mysql://localhost:3306/sportsclub_test?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false";
 
     private static Database db;

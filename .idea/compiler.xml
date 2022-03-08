@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sportsclub" />
+        <module name="dat2-flow3-sportsclub" />
       </profile>
     </annotationProcessing>
   </component>
