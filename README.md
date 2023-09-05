@@ -1,7 +1,7 @@
 # Sportsclub database java application
 
 This piece of code is an example on how to apply CRUD operations on
-a MySql database from Java through jdbc.
+a Postgres database from Java through jdbc.
 
 The code is written for 2. semester on the Datamatiker education in Lyngby.
 
@@ -23,14 +23,14 @@ that we can make sure that our database queries are working.
    `git clone -b integrationtest git@github.com:jonbertelsen/dat2-flow3-sportsclub.git`
 2) After cloning, remove the .git folder by typing `rm -rf .git`.
 3) Open the project in IntelliJ
-4) We assume that you already have the sportsclub database on your MySql sever. 
-   Otherwise open the file "src/main/resources/sportsclub.sql" in mySql Workbench 
-   and execute it to create the sportsclub database.
-5) Update the MySql login credentials in the Main class to reflect your local system
-6) Create a new database called "sportsclub_test" on your MySql server
-   Open the file src/main/resources/sportsclub_test.sql in MySql Workbench and 
+4) We assume that you already have the sportsclub database in your Postgres. 
+   Otherwise create the database 'sportsclub', open the file "src/main/resources/sportsclub.sql" in pgAdmin 
+   and execute it to create the sportsclub tables and data.
+5) Update the login credentials in the Main class to reflect your local system
+6) Create a new database called "sportsclub_test" in Postgres.
+   Open the file src/main/resources/sportsclub_test.sql in pgAdmin and 
    execute it. You can read more about why and how in the file.
-7) Update the MySql login credentials in the MemberMapperTest.java file.
+7) Update the login credentials in the MemberMapperTest.java file.
 8) Run Main and the tests, and get to know the code.
 
 ### Getting to know the MemberMapperTest.java file
