@@ -1,7 +1,7 @@
 /*
     This sql script should only be executed once to create table structures for the test database.
     It copies the table structures from the 5 tables in the original database (sportsclub)
-    1) First create a new database called "sportsclub_test" on MySql
+    1) First create a new database called "sportsclub_test" 
     2) Run this script
 */
 
