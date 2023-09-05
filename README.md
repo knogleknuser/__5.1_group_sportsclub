@@ -1,7 +1,7 @@
 # Sportsclub database java application
 
 This piece of code is an example on how to apply CRUD operations on
-a MySql database from Java through jdbc.
+a Postgres database from Java through jdbc.
 
 The code is written for 2. semester on the Datamatiker education in Lyngby.
 
@@ -18,9 +18,10 @@ datamappers for some of the other entities in the database.
 1) Begin by cloning the project
 2) After cloning, remove the .git folder by typing `rm -rf .git`.
 3) Open the project in IntelliJ
-4) Open the file "src/main/resources/sportsclub.sql" in mySql Workbench and execute it to create the sportsclub database.
-5) Update the MySql login credentials in the Main class to reflect your local system
-6) Run it and get to know the code.
+4) Create the database 'sportsclub' in Postgres via pgAdmin
+5) Open the file "src/main/resources/sportsclub.sql" in pgAdmin and execute it to create the sportsclub tables and fill them with data.
+6) Update the login credentials in the Main class to reflect your local system
+7) Run it and get to know the code.
 
 ### Add some nice queries
 
