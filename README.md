@@ -40,7 +40,7 @@ Hint: It might be useful to create a view with lots of joins
 ### Add a RegistrationMapper
 
 13) Add a new class in the persistence package called "RegistrationMapper"
-14) Add a method that can be used to add a new registration to a member. For example as `addToTeam(int member_id, String team_id)`. 
+14) Add a method that can be used to add a new registration to a member. For example as `addToTeam(int member_id, String team_id, int price)`. 
     Your test could be to add the team called "ten01" to member 13. You should probably let your self be inspired 
     by the insertMember method in the MemberMapper.
 15) Add a new method to the RegistrationMapper called getAllRegistrations() that returns an arraylist of registrations.
