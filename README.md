@@ -26,7 +26,7 @@ that we can make sure that our database queries are working.
 4) We assume that you already have the sportsclub database in your Postgres. 
    Otherwise create the database 'sportsclub', open the file "src/main/resources/sportsclub.sql" in pgAdmin 
    and execute it to create the sportsclub tables and data.
-5) Update the login credentials in the Main class to reflect your local system and the Driver in the Database class
+5) Update the login credentials in the Main and MemberMapper class to reflect your local system and also update the Driver in the Database class
 6) Create a new database called "sportsclub_test" in Postgres.
    Open the file src/main/resources/sportsclub_test.sql in pgAdmin and 
    execute it. You can read more about why and how in the file.
