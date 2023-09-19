@@ -52,10 +52,10 @@ class MemberMapperTest {
                         "(3760, 'Gudhjem'), (3770, 'Allinge'), (3782, 'Klemmensker')");
 
               
-                stmt.execute("INSERT INTO member (name, address, zip, gender, year) VALUES " +
-                        "('Hans Sørensen', '2, Agernvej 3', 3700, 'm', 2000), " +
-                        "('Jens Kofoed', 'Agrevej 5', 3700, 'm', 2001), " +
-                        "('Peter Hansen', 'Ahlegårdsvejen 7', 3700, 'm', 2002)");
+                stmt.execute("INSERT INTO member (member_id, name, address, zip, gender, year) VALUES " +
+                        "(1, 'Hans Sørensen', 'Agernvej 3', 3700, 'm', 2000), " +
+                        "(2, 'Jens Kofoed', 'Agrevej 5', 3700, 'm', 2001), " +
+                        "(3, 'Peter Hansen', 'Ahlegårdsvejen 7', 3700, 'm', 2002)");
 
             }
         } catch (SQLException throwables) {
@@ -72,7 +72,7 @@ class MemberMapperTest {
     void getAllMembers() throws DatabaseException {
         List<Member> members = memberMapper.getAllMembers();
         assertEquals(3, members.size());
-        assertEquals(members.get(0), new Member(1,"Hans Sørensen", "2, Agernvej 3",3700, "Rønne","m",2000));
+        assertEquals(members.get(0), new Member(1,"Hans Sørensen", "Agernvej 3",3700, "Rønne","m",2000));
         assertEquals(members.get(1), new Member(2, "Jens Kofoed","Agrevej 5",3700,"Rønne","m",2001));
         assertEquals(members.get(2), new Member(3, "Peter Lundin","Ahlegårdsvejen 7",3700,"Rønne","m",2002));
     }
