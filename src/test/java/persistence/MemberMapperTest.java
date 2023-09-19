@@ -41,22 +41,22 @@ class MemberMapperTest {
         try (Connection testConnection = db.connect()) {
             try (Statement stmt = testConnection.createStatement() ) {
                 // Remove all rows from all tables
-                stmt.execute("delete from registration");
-                stmt.execute("delete from team");
-                stmt.execute("delete from sport");
-                stmt.execute("delete from member");
-                stmt.execute("delete from zip");
-                // Insert a well known number of members into the zip and member tables
-                stmt.execute(   "INSERT INTO `zip` VALUES " +
-                                "(3700,'Rønne'),(3730,'Nexø'),(3740,'Svanneke')" +
-                                ",(3760,'Gudhjem'),(3770,'Allinge'),(3782,'Klemmensker')");
-                stmt.execute("ALTER TABLE `member` DISABLE KEYS");
-                stmt.execute("ALTER TABLE `member` AUTO_INCREMENT = 1");
-                stmt.execute(   "INSERT INTO `member` VALUES " +
-                                "(1,'Hans Sørensen','2, Agernvej 3',3700,'m','2000')," +
-                                "(2, 'Jens Kofoed','Agrevej 5',3700,'m','2001')," +
-                                "(3, 'Peter Lundin','Ahlegårdsvejen 7',3700,'m','2002')");
-                stmt.execute("ALTER TABLE `member` ENABLE KEYS");
+                stmt.execute("DELETE FROM registration");
+                stmt.execute("DELETE FROM team");
+                stmt.execute("DELETE FROM sport");
+                stmt.execute("DELETE FROM member");
+                stmt.execute("DELETE FROM zip");
+
+               stmt.execute("INSERT INTO zip VALUES " +
+                        "(3700, 'Rønne'), (3730, 'Nexø'), (3740, 'Svanneke'), " +
+                        "(3760, 'Gudhjem'), (3770, 'Allinge'), (3782, 'Klemmensker')");
+
+              
+                stmt.execute("INSERT INTO member (name, address, zip, gender, year) VALUES " +
+                        "('Hans Sørensen', '2, Agernvej 3', 3700, 'm', 2000), " +
+                        "('Jens Kofoed', 'Agrevej 5', 3700, 'm', 2001), " +
+                        "('Peter Hansen', 'Ahlegårdsvejen 7', 3700, 'm', 2002)");
+
             }
         } catch (SQLException throwables) {
             fail("Database connection failed");
