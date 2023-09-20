@@ -74,12 +74,12 @@ class MemberMapperTest {
         assertEquals(3, members.size());
         assertEquals(members.get(0), new Member(1,"Hans Sørensen", "Agernvej 3",3700, "Rønne","m",2000));
         assertEquals(members.get(1), new Member(2, "Jens Kofoed","Agrevej 5",3700,"Rønne","m",2001));
-        assertEquals(members.get(2), new Member(3, "Peter Lundin","Ahlegårdsvejen 7",3700,"Rønne","m",2002));
+        assertEquals(members.get(2), new Member(3, "Peter Hansen","Ahlegårdsvejen 7",3700,"Rønne","m",2002));
     }
 
     @Test
     void getMemberById() throws DatabaseException {
-        assertEquals(new Member(3, "Peter Lundin","Ahlegårdsvejen 7",3700,"Rønne","m",2002), memberMapper.getMemberById(3));
+        assertEquals(new Member(3, "Peter Hansen,"Ahlegårdsvejen 7",3700,"Rønne","m",2002), memberMapper.getMemberById(3));
     }
 
     @Test
