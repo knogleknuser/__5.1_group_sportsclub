@@ -14,11 +14,10 @@ public class Database {
         USER = user;
         PASSWORD = password;
         URL = url;
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("org.postgresql.Driver");
        }
 
     public Connection connect() throws SQLException {
-        Connection connection = null;
         connection = DriverManager.getConnection(URL, USER, PASSWORD);
         return connection;
     }
