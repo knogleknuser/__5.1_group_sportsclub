@@ -20,17 +20,17 @@ that we can make sure that our database queries are working.
 
 1) Begin by cloning the project. Since todays project is hiding on a branch called
    "integrationtest", you need to clone the specific branch like this: 
-   `git clone -b integrationtest https://github.com/dat2Cph/dat2-sportsclub.git`
+   - `git clone -b integrationtest https://github.com/dat2Cph/dat2-sportsclub.git` or with SSH:
+   - `git clone -b integrationtest git@github.com:dat2Cph/dat2-sportsclub.git`
+   
 2) After cloning, remove the .git folder by typing `rm -rf .git`.
 3) Open the project in IntelliJ
 4) We assume that you already have the sportsclub database in your Postgres. 
-   Otherwise create the database 'sportsclub', open the file "src/main/resources/sportsclub.sql" in pgAdmin 
+   Otherwise, create the database 'sportsclub', open the file "src/main/resources/sportsclub.sql" in pgAdmin 
    and execute it to create the sportsclub tables and data.
-5) Update the login credentials in the Main and MemberMapper class to reflect your local system and also update the Driver in the Database class
-6) Create a new database called "sportsclub_test" in Postgres.
-   Open the file src/main/resources/sportsclub_test.sql in pgAdmin and 
-   execute it. You can read more about why and how in the file.
-7) Update the login credentials in the MemberMapperTest.java file.
+5) Update the login credentials in the "Main class" to reflect your local system. It should be okay alreade, but be sure.
+6) Inside the `sportsclub` database, create a new schema in PgAdmin called "test". The
+7) Update the login credentials in the MemberMapperTest.java file if needed. Notice how the jdbc url is pointing to the test schema.
 8) Run Main and the tests, and get to know the code.
 
 ### Getting to know the MemberMapperTest.java file
@@ -53,7 +53,8 @@ that we can make sure that our database queries are working.
     to figure out how to test it correctly. For this
     to work, you will need to use assertThrows and take a close
     look at the exceptionhandling in the deleteMember method.
-    Hint: Try this version: 
+    Hint: Try this version:
+
     ```java
     @Test
     void deleteMemberUnknownId() throws DatabaseException {
@@ -71,7 +72,6 @@ that we can make sure that our database queries are working.
 15) Yesterday we worked on adding a RegistrationMapper to the
     application in the exercises. In case you have made it, then
     add a new test class and test the mapper.
-
 
 ### The EER diagram
 
