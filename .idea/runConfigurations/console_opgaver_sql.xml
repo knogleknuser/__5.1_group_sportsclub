@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="console_opgaver.sql" type="DatabaseScript" editBeforeRun="true" singleton="false">
+    <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/ecd322aa-98b6-4345-a880-5f1464633491/console.sql" />
+    <script-mode>FILE</script-mode>
+    <data-source id="ecd322aa-98b6-4345-a880-5f1464633491" namespace="database/&quot;sportsclub&quot;/schema/&quot;public&quot;" />
+    <method v="2" />
+  </configuration>
+</component>
