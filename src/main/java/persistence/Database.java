@@ -15,7 +15,7 @@ public class Database {
         PASSWORD = password;
         URL = url;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             // TODO: Make own throwable exception and let it bubble upwards
             e.printStackTrace();
