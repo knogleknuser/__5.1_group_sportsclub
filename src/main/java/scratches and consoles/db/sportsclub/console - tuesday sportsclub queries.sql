@@ -2,28 +2,50 @@
 -- So that was a fucking lie
 CREATE VIEW members_and_sports AS
 SELECT
-    member.member_id,
-    member.name,
-    member.address,
-    zip.city,
-    member.gender,
-    member.year,
-    sport.sport,
-    team.team_id,
-    registration.price
+    m.member_id,
+    m.name,
+    m.address,
+    z.city,
+    m.gender,
+    m.year,
+    s.sport,
+    t.team_id,
+    r.price
 FROM
-    team
-        INNER JOIN sport USING (sport_id)
-        INNER JOIN registration USING (team_id)
-        INNER JOIN member USING (member_id)
-        INNER JOIN zip USING (zip);
+    member m
+        LEFT JOIN public.zip z ON z.zip = m.zip
+        LEFT JOIN public.registration r ON m.member_id = r.member_id
+        LEFT JOIN public.team t ON t.team_id = r.team_id
+        LEFT JOIN public.sport s ON s.sport_id = t.sport_id
 
+
+CREATE VIEW registrations_detailed AS
+SELECT
+    members_and_sports.member_id,
+    members_and_sports.name,
+    members_and_sports.address,
+    members_and_sports.city,
+    members_and_sports.gender,
+    members_and_sports.year,
+    members_and_sports.sport,
+    members_and_sports.team_id,
+    members_and_sports.price
+FROM
+    members_and_sports
+WHERE
+    members_and_sports.sport IS NOT NULL
+    AND members_and_sports.team_id IS NOT NULL
+    AND members_and_sports.price IS NOT NULL;
+
+
+-- DROP VIEW members_and_sports;
 
 SELECT *
 FROM
     members_and_sports
 ORDER BY
-    name;
+    member_id;
+
 
 
 -- Opgave 7 , Find antallet af medlemmer i hvert hold

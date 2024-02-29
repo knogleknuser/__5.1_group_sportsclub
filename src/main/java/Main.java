@@ -1,5 +1,9 @@
 import databases.sportsclub.DatabaseSportsclub;
 import databases.sportsclub.entities.member.Member;
+import databases.sportsclub.entities.registration.Registration;
+import databases.sportsclub.entities.registration.RegistrationMapper;
+import databases.sportsclub.views.MembersDetailed;
+import databases.sportsclub.views.MembersDetailedMapper;
 import persistence.Database;
 import databases.sportsclub.entities.member.MemberMapper;
 import persistence.exceptions.CustomSQLException;
@@ -20,10 +24,11 @@ public class Main
         try {
             List< Member > members = memberMapper.getAllMembers();
             
-            showMembers( members );
+            showRows( members,"members" );
             
         } catch ( CustomSQLException e ) {
-            System.out.println( e.getMessage() );
+            System.out.println();
+            System.err.println( e.getMessage() );
         }
         
         
@@ -33,7 +38,8 @@ public class Main
             showMemberById( memberMapper, 13 );
             
         } catch ( CustomSQLException e ) {
-            System.out.println( e.getMessage() );
+            System.out.println();
+            System.err.println( e.getMessage() );
         }
         
         
@@ -55,7 +61,8 @@ public class Main
             deleteMember( memberInserted.getMemberId(), memberMapper );
             
         } catch ( CustomSQLException e ) {
-            System.out.println( e.getMessage() );
+            System.out.println();
+            System.err.println( e.getMessage() );
         }
         
         
@@ -65,9 +72,68 @@ public class Main
             updateMember( 53, memberMapper );
             
         } catch ( CustomSQLException e ) {
-            System.out.println( e.getMessage() );
+            System.out.println();
+            System.err.println( e.getMessage() );
         }
         
+        
+        //My custom registration stuff-----------------------------------------------------------
+        
+        RegistrationMapper registrationMapper = new RegistrationMapper( db );
+        
+        //New registration
+        try {
+            Registration registration = new Registration( 53, "gym01", 100 );
+            insertRegistration( registration, registrationMapper );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println();
+            System.err.println( e.getMessage() );
+        }
+        
+        
+        
+        //Show all registrations
+        try {
+            List< ? > registrations = registrationMapper.getAllRegistrations();
+            
+            showRows( registrations,"registrations" );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println();
+            System.err.println( e.getMessage() );
+        }
+        
+        MembersDetailedMapper membersDetailedMapper = new MembersDetailedMapper( db );
+        
+        //Show all members with registrations in detail
+        try {
+            List< ? > registrations = membersDetailedMapper.getAllRegistrationsDetailed();
+            
+            showRows( registrations,"Detailed Registrations" );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println();
+            System.err.println( e.getMessage() );
+            e.getException().printStackTrace();
+        }
+        
+        //Show all members in detail
+        try {
+            List< ? > registrations = membersDetailedMapper.getAllMembersDetailed();
+            
+            showRows( registrations,"Detailed Members" );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println();
+            System.err.println( e.getMessage() );
+            e.getException().printStackTrace();
+        }
+        
+        
+        
+        
+       //Closing down------------------------------------------------------
         try {
             db.close();
             
@@ -130,19 +196,32 @@ public class Main
         System.out.println( memberMapper.getMemberById( memberId ).toString() );
     }
     
-    private static void showMembers( List< Member > members )
+    private static void showRows( List< ? > rows, String contains )
     {
         System.out.println();
-        System.out.println( "***** Vis alle medlemmer *******" );
+        System.out.println( "***** Vis alle "+contains+" *******" );
         
-        if ( members == null ) {
-            System.out.println( "Members was null, maybe there are no members?" );
+        if ( rows == null ) {
+            System.out.println( contains+" was null, maybe there are no members?" );
             return;
         }
         
-        for ( Member member : members ) {
-            System.out.println( member.toString() );
+        for ( Object row : rows ) {
+            System.out.println( row.toString() );
         }
+    }
+    
+    private static Registration insertRegistration( Registration newRegistration, RegistrationMapper registrationMapper ) throws CustomSQLException
+    {
+        System.out.println();
+        System.out.println( "***** Inserting a new registration : *******" );
+        System.out.println( "It has these values before insertion:" );
+        System.out.println( newRegistration.toString() );
+        
+        Registration registrationInserted = registrationMapper.addToTeam( newRegistration );
+        System.out.println( "Inserted a new registration! :" + registrationInserted.toString() );
+        return registrationInserted;
+        
     }
     
     

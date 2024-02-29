@@ -18,7 +18,7 @@ public class DatabaseSportsclub
     public final static String URL = URL_STEENS_LAPTOP;
     
     
-    //All the juicy info you need for sportsclub!
+    //All the juicy info you need for sportsclub!-------------
     public static Database getDb() throws CustomSQLException
     {
         return new Database( USER, PASSWORD, URL );
