@@ -11,7 +11,7 @@ The code is NOT refactored.
 
 Your task is to continue the work that has been started.
 We need to get some useful queries built into the system, and also
-datamappers for some of the other entities in the database.
+datamappers for some of the other databases.sportsclub.entities in the database.
 
 ### Get started
 

@@ -1,69 +1,149 @@
-import entities.Member;
+import databases.sportsclub.DatabaseSportsclub;
+import databases.sportsclub.entities.member.Member;
 import persistence.Database;
-import persistence.MemberMapper;
+import databases.sportsclub.entities.member.MemberMapper;
+import persistence.exceptions.CustomSQLException;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public class Main {
-
-    private final static String USER = "postgres";
-    private final static String PASSWORD = "postgres";
+public class Main
+{
     
-    private final static String URL_LOCALHOST = "jdbc:postgresql://localhost:5432/sportsclub?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true"; //Either this
-    private final static String URL_STEENS_LAPTOP = "jdbc:postgresql://87.57.196.198:5432/sportsclub?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true"; //OR this
+    public static void main( String[] args ) throws CustomSQLException
+    {
+        Database db = new Database( DatabaseSportsclub.getDb() );
+        
+        MemberMapper memberMapper = new MemberMapper( db );
+        
+        //Show all members
+        try {
+            List< Member > members = memberMapper.getAllMembers();
+            
+            showMembers( members );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println( e.getMessage() );
+        }
+        
+        
+        
+        //Show single member
+        try {
+            showMemberById( memberMapper, 13 );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println( e.getMessage() );
+        }
+        
+        
+        
+        
+        //Insert and Delete
+        try {
+            
+            Member newMember = new Member(
+                    "Ole Olsen",
+                    "Banegade 2",
+                    3700,
+                    "Rønne",
+                    "m",
+                    1967
+            );
+            
+            Member memberInserted = insertMember( newMember, memberMapper );
+            deleteMember( memberInserted.getMemberId(), memberMapper );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println( e.getMessage() );
+        }
+        
+        
+        
+        //Update
+        try {
+            updateMember( 53, memberMapper );
+            
+        } catch ( CustomSQLException e ) {
+            System.out.println( e.getMessage() );
+        }
+        
+        try {
+            db.close();
+            
+        } catch ( SQLException e ) {
+            throw new CustomSQLException( "Failed to close the local main connection to sportsclub database", e );
+        }
+    }
     
-    //Choose one of the above to use as the URL
-    private final static String URL = URL_STEENS_LAPTOP;
-
-    public static void main(String[] args) {
-
-        Database db = new Database(USER, PASSWORD, URL);
-        MemberMapper memberMapper = new MemberMapper(db);
-        List<Member> members = memberMapper.getAllMembers();
-
-        showMembers(members);
-        showMemberById(memberMapper, 13);
-
-        /*  
-            int newMemberId = insertMember(memberMapper);
-            deleteMember(newMemberId, memberMapper);
-            showMembers(members);
-            updateMember(13, memberMapper);
-        */
-    }
-
-    private static void deleteMember(int memberId, MemberMapper memberMapper) {
-        if (memberMapper.deleteMember(memberId)){
-            System.out.println("Member with id = " + memberId + " is removed from DB");
+    private static void deleteMember( int memberId, MemberMapper memberMapper ) throws CustomSQLException
+    {
+        System.out.println();
+        System.out.println( "***** Deleting member nr. " + memberId + ": *******" );
+        
+        if ( memberMapper.deleteMember( memberId ) ) {
+            System.out.println( "Member with id = " + memberId + " is removed from DB" );
         }
     }
-
-    private static int insertMember(MemberMapper memberMapper) {
-        Member m1 = new Member("Ole Olsen", "Banegade 2", 3700, "Rønne", "m", 1967);
-        Member m2 = memberMapper.insertMember(m1);
-        showMemberById(memberMapper, m2.getMemberId());
-        return m2.getMemberId();
+    
+    private static Member insertMember( Member newMember, MemberMapper memberMapper ) throws CustomSQLException
+    {
+        System.out.println();
+        System.out.println( "***** Inserting a new member : *******" );
+        System.out.println( "They have these values before insertion:" );
+        System.out.println( newMember.toString() );
+        
+        Member memberInserted = memberMapper.insertMember( newMember );
+        System.out.println( "Inserted a new member! :" + memberInserted.toString() );
+        return memberInserted;
+        
     }
-
-    private static void updateMember(int memberId, MemberMapper memberMapper) {
-        Member m1 = memberMapper.getMemberById(memberId);
-        m1.setYear(1970);
-        if(memberMapper.updateMember(m1)){
-            showMemberById(memberMapper, memberId);
+    
+    private static void updateMember( int memberId, MemberMapper memberMapper ) throws CustomSQLException
+    {
+        System.out.println();
+        System.out.println( "***** Opdaterer medlem nr. " + memberId + ": *******" );
+        
+        Member mOriginal = memberMapper.getMemberById( memberId );
+        
+        System.out.println( "Originale Info, bemært at vi ændrer året til 1970" );
+        System.out.println( mOriginal.toString() );
+        
+        Member mChanged = new Member(
+                mOriginal.getMemberId(),
+                mOriginal.getName(),
+                mOriginal.getAddress(),
+                mOriginal.getZip(),
+                mOriginal.getCity(),
+                mOriginal.getGender(),
+                1970 );
+        
+        if ( memberMapper.updateMember( mChanged ) ) {
+            showMemberById( memberMapper, memberId );
         }
     }
-
-    private static void showMemberById(MemberMapper memberMapper, int memberId) {
-        System.out.println("***** Vis medlem nr. 13: *******");
-        System.out.println(memberMapper.getMemberById(memberId).toString());
+    
+    private static void showMemberById( MemberMapper memberMapper, int memberId ) throws CustomSQLException
+    {
+        System.out.println();
+        System.out.println( "***** Vis medlem nr. " + memberId + ": *******" );
+        System.out.println( memberMapper.getMemberById( memberId ).toString() );
     }
-
-    private static void showMembers(List<Member> members) {
-        System.out.println("***** Vis alle medlemmer *******");
-        for (Member member : members) {
-            System.out.println(member.toString());
+    
+    private static void showMembers( List< Member > members )
+    {
+        System.out.println();
+        System.out.println( "***** Vis alle medlemmer *******" );
+        
+        if ( members == null ) {
+            System.out.println( "Members was null, maybe there are no members?" );
+            return;
+        }
+        
+        for ( Member member : members ) {
+            System.out.println( member.toString() );
         }
     }
-
-
+    
+    
 }
