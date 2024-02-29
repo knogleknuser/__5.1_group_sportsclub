@@ -8,7 +8,12 @@ public class Main {
 
     private final static String USER = "postgres";
     private final static String PASSWORD = "postgres";
-    private final static String URL = "jdbc:postgresql://localhost:5432/sportsclub?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true";
+    
+    private final static String URL_LOCALHOST = "jdbc:postgresql://localhost:5432/sportsclub?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true"; //Either this
+    private final static String URL_STEENS_LAPTOP = "jdbc:postgresql://87.57.196.198:5432/sportsclub?serverTimezone=CET&useSSL=false&allowPublicKeyRetrieval=true"; //OR this
+    
+    //Choose one of the above to use as the URL
+    private final static String URL = URL_STEENS_LAPTOP;
 
     public static void main(String[] args) {
 
