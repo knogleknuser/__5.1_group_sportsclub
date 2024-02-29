@@ -1,4 +1,5 @@
 -- Opgave 0 Laver et view til at gøre resten nemmere, hopefully nemmere
+-- So that was a fucking lie
 CREATE VIEW members_and_sports AS
 SELECT
     member.member_id,
@@ -25,7 +26,7 @@ ORDER BY
     name;
 
 
--- Opgave 17 , Find antallet af medlemmer i hvert hold
+-- Opgave 7 , Find antallet af medlemmer i hvert hold
 SELECT
     team_id,
     COUNT(member_id) AS total_members
