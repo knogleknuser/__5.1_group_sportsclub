@@ -1,6 +1,6 @@
 -- Opgave 0 Laver et view til at gøre resten nemmere, hopefully nemmere
 -- So that was a fucking lie
-CREATE VIEW members_and_sports AS
+CREATE VIEW members_detailed AS
 SELECT
     m.member_id,
     m.name,
@@ -18,31 +18,30 @@ FROM
         LEFT JOIN public.team t ON t.team_id = r.team_id
         LEFT JOIN public.sport s ON s.sport_id = t.sport_id
 
-
 CREATE VIEW registrations_detailed AS
 SELECT
-    members_and_sports.member_id,
-    members_and_sports.name,
-    members_and_sports.address,
-    members_and_sports.city,
-    members_and_sports.gender,
-    members_and_sports.year,
-    members_and_sports.sport,
-    members_and_sports.team_id,
-    members_and_sports.price
+    members_detailed.member_id,
+    members_detailed.name,
+    members_detailed.address,
+    members_detailed.city,
+    members_detailed.gender,
+    members_detailed.year,
+    members_detailed.sport,
+    members_detailed.team_id,
+    members_detailed.price
 FROM
-    members_and_sports
+    members_detailed
 WHERE
-    members_and_sports.sport IS NOT NULL
-    AND members_and_sports.team_id IS NOT NULL
-    AND members_and_sports.price IS NOT NULL;
+    members_detailed.sport IS NOT NULL
+    AND members_detailed.team_id IS NOT NULL
+    AND members_detailed.price IS NOT NULL;
 
 
 -- DROP VIEW members_and_sports;
 
 SELECT *
 FROM
-    members_and_sports
+    members_detailed
 ORDER BY
     member_id;
 

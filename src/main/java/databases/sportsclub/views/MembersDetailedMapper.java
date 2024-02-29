@@ -29,7 +29,7 @@ public class MembersDetailedMapper
         String sql =
                 "SELECT * " +
                 "FROM " +
-                "    members_and_sports " +
+                "    members_detailed " +
                 "ORDER BY " +
                 "    member_id";
         
