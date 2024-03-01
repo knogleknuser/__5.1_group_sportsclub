@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dao-class xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="dao.xsd">
+
+    <crud dto="Member" table="public.member" >
+        <create method="createMember"/>
+        <read-all method="readMemberList"/>
+        <read method="readMember"/>
+        <update method="updateMember"/>
+        <delete method="deleteMember"/>
+    </crud>
+
+    <crud dto="Registration" table="public.registration">
+        <create method="createRegistration"/>
+        <read-all method="readRegistrationList"/>
+        <read method="readRegistration"/>
+        <update method="updateRegistration"/>
+        <delete method="deleteRegistration"/>
+    </crud>
+
+    <crud dto="Sport" table="public.sport">
+        <create method="createSport"/>
+        <read-all method="readSportList"/>
+        <read method="readSport"/>
+        <update method="updateSport"/>
+        <delete method="deleteSport"/>
+    </crud>
+
+    <crud dto="Team" table="public.team">
+        <create method="createTeam"/>
+        <read-all method="readTeamList"/>
+        <read method="readTeam"/>
+        <update method="updateTeam"/>
+        <delete method="deleteTeam"/>
+    </crud>
+
+    <crud dto="Users" table="public.users">
+        <create method="createUsers"/>
+        <read-all method="readUsersList"/>
+        <read method="readUsers"/>
+        <update method="updateUsers"/>
+        <delete method="deleteUsers"/>
+    </crud>
+
+    <crud dto="Zip" table="public.zip">
+        <create method="createZip"/>
+        <read-all method="readZipList"/>
+        <read method="readZip"/>
+        <update method="updateZip"/>
+        <delete method="deleteZip"/>
+    </crud>
+
+    <crud dto="MembersDetailed" table="public.members_detailed">
+        <create method="createMembersDetailed"/>
+        <read-all method="readMembersDetailedList"/>
+        <read method="readMembersDetailed"/>
+        <update method="updateMembersDetailed"/>
+        <delete method="deleteMembersDetailed"/>
+    </crud>
+
+    <crud dto="RegistrationsDetailed" table="public.registrations_detailed">
+        <create method="createRegistrationsDetailed"/>
+        <read-all method="readRegistrationsDetailedList"/>
+        <read method="readRegistrationsDetailed"/>
+        <update method="updateRegistrationsDetailed"/>
+        <delete method="deleteRegistrationsDetailed"/>
+    </crud>
+
+</dao-class>

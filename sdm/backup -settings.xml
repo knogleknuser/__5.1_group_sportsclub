@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="settings.xsd">
+
+    <!-- target:
+
+            - Golang: the same as "module" in "go.mod".
+            - Others: base folder of generated files (relative to the project root). -->
+
+    <!-- sql: base folder of SQL files (relative to the project root) -->
+
+    <folders target="base_dir_rel_path_or_go_module_name_from_go_mod" sql="sdm/sql"/>
+
+    <!-- scope (only PHP, Java, Go):
+
+            - PHP. The name of DTO namespace. An empty one is OK.
+            - Java. The name of DTO package.
+            - Golang. Base folder of generated DTO files (relative to the project root). -->
+
+    <!-- inheritance (only Java). Fully-qualified name of base class:
+                inheritance="implements com.google.gwt.user.client.rpc.IsSerializable"
+                    target class:
+                        "public class Word implements com.google.gwt.user.client.rpc.IsSerializable..."  -->
+
+    <!-- field-names-mode (PHP, Java, Go): 0 - TitleCase, 1 - camelCase; 2 - snake_case -->
+
+    <!-- macro: VM template to render DTO classes.
+
+            1. Internal VM template is used if "macro" is empty (default).
+            2. VM template is located in "<macros>...<macro><vm>|<vm-xml>..." section below.
+            2. Ending ".vm" means using of VM file and specifies the path to this file relative to the project root:
+                    <dto ... macro="<path>/<name>.vm"/>
+
+         Single VM template for both DTO and DAO is OK (like in VM examples from the tab "Admin").
+         Separate VM templates for DTO and DAO are OK too.    -->
+
+    <!-- Go:-->
+
+    <dto scope=".../dto" inheritance="" field-names-mode="0" macro=""/>
+
+    <!-- Java:-->
+
+    <!--    <dto scope="com.mycom.myjavaapp.dbal.dto" inheritance="" field-names-mode="1" macro=""/>-->
+
+    <!-- scope (only PHP, Java, Go):
+
+            - PHP. The name of DAO namespace. An empty one is OK.
+            - Java. The name of DAO package.
+            - Golang. Base folder of generated DAO files (relative to the project root). -->
+
+    <!-- field-assign-mode (Go only) use="optional":
+    
+            0 - by column name
+            1 - by position
+            2 - ptr to DTO (Gorm only)
+            3 - direct ptr to resulting slice of DTO-s (Gorm and Beego). -->
+
+    <!-- macro: VM template to render DAO classes.
+
+            1. Internal VM template is used if "macro" is empty (default).
+            2. VM template is located in "<macros>...<macro><vm>|<vm-xml>..." section below.
+            3. Ending ".vm" means using of VM file and specifies the path to this file relative to the project root:
+                    <dao ... macro="<path>/<name>.vm"/>
+
+         Single VM template for both DTO and DAO is OK (like in VM examples from the tab "Admin").
+         Separate VM templates for DTO and DAO are OK too. -->
+
+    <dao scope=".../dao" field-assign-mode="0" macro=""/>
+
+    <!--    <dao scope="com.mycom.myjavaapp.dbal.dao" macro=""/>-->
+
+    <!-- IDE integration -->
+
+    <ide event-log="true"/>
+
+    <!-- jar: location of JDBC driver JAR file (relative to the project root); -->
+
+    <!-- class: JDBC driver class name; -->
+
+    <!-- url: JDBC connection URL (use $PROJECT_DIR$ or ${project_loc} if you
+        need to specify project path); -->
+
+    <!-- user: user name; -->
+
+    <!-- pwd: password; -->
+
+    <!--    <jdbc jar="lib/mysql-connector-java-5.1.22-bin.jar"-->
+    <!--          class="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/orders"-->
+    <!--          user="root" pwd="root"/>-->
+
+    <jdbc jar="sdm/sqlite-jdbc-3.36.0.3.jar" class="org.sqlite.JDBC"
+          url="jdbc:sqlite:$PROJECT_DIR$/todolist.sqlite3" user="" pwd=""/>
+
+    <!-- Tag 'type-map' specifies how the types detected by
+         code generator (JDBC) are rendered in target code. -->
+
+    <!-- If <type detected=<JDBC type> is missing in 'type-map', then 'default' is used. -->
+
+    <!-- If 'default' is empty, detected type is rendered as-is. -->
+
+    <type-map default="">
+
+        <!-- Example for Android/SQLite3: -->
+
+        <!-- On Dev. PC, it is Integer, but in Android run-time it is Long -->
+        <!--        <type detected="java.lang.Integer" target="Long -> getLong"/>-->           <!-- Android -->
+        <!--        <type detected="java.lang.Integer" target="Integer -> getInteger"/>-->     <!-- JDBC -->
+        <!--        <type detected="java.lang.Double" target="Double -> getDouble"/>-->
+        <!--        <type detected="java.lang.String" target="String -> getString"/>-->
+        <!--        <type detected="byte[]" target="byte[] -> getBytes"/>-->
+
+        <!-- Example for JDBC and MySQL/PostgreSQL: -->
+
+        <!--        <type detected="java.lang.Short" target="Short -> getShort"/>-->
+        <!--        <type detected="java.lang.Integer" target="Integer -> getInteger"/>-->
+        <!--        <type detected="java.lang.Long" target="Long -> getLong"/>-->
+
+        <!--        <type detected="java.lang.Float" target="Float -> getFloat"/>-->
+        <!--        <type detected="java.lang.Double" target="Double -> getDouble"/>-->
+        <!--        <type detected="java.math.BigDecimal" target="java.math.BigDecimal -> getBigDecimal"/>-->
+
+        <!--        <type detected="java.lang.String" target="String -> getString"/>-->
+        <!--        <type detected="java.util.Date" target="java.util.Date -> getDate"/>-->
+        <!--        <type detected="byte[]" target="byte[] -> getBytes"/>-->
+        <!--        <type detected="java.lang.Boolean" target="Boolean -> getBoolean"/>-->
+
+        <!-- Example for JDBC and Oracle: -->
+
+        <!--        <type detected="java.math.BigDecimal" target="java.math.BigDecimal -> getBigDecimal"/>-->
+        <!--        <type detected="java.lang.String" target="String -> getString"/>-->
+        <!--        <type detected="java.util.Date" target="java.util.Date -> getDate"/>-->
+        <!--        <type detected="byte[]" target="byte[] -> getBytes"/>-->
+
+        <!-- Example for Go: -->
+
+        <type detected="gorm-java.util.UUID" target="github.com/google/uuid:uuid.UUID${json-gorm}|1:;type:uuid"/>
+        <type detected="gorm-java.util.UUID+auto"
+              target="github.com/google/uuid:uuid.UUID${json-gorm}|1:;type:uuid;default:uuid_generate_v4()"/>
+
+        <type detected="gorm-java.sql.Array" target="github.com/lib/pq:pq.StringArray${json-gorm}|1:;type:text[]"/>
+
+        <type detected="gorm-java.lang.Short" target="int16${json-gorm}"/>
+        <type detected="gorm-java.lang.Integer" target="int32${json-gorm}"/>
+        <type detected="gorm-java.lang.Long" target="int64${json-gorm}"/>
+
+        <type detected="gorm-java.lang.Float" target="float32${json-gorm}"/>
+        <type detected="gorm-java.lang.Double" target="float64${json-gorm}"/>
+        <type detected="gorm-java.math.BigDecimal" target="float64${json-gorm}"/>
+        <type detected="gorm-java.math.BigDecimal+auto" target="int64$${json-gorm}|1:;autoIncrement"/>
+
+        <type detected="gorm-java.lang.String" target="string${json-gorm}"/>
+        <type detected="gorm-java.util.Date" target="time:time.Time${json-gorm}"/>
+        <type detected="gorm-byte[]" target="string${json-gorm}"/>
+        <type detected="gorm-java.lang.Boolean" target="int64${json-gorm}"/>
+
+        <type detected="gorm-java.lang.Object" target="interface{}${json-gorm}"/>
+
+        <!-- ************************************* -->
+
+        <type detected="java.util.UUID" target="github.com/google/uuid:uuid.UUID${json}"/>
+        <type detected="java.sql.Array" target="[]string${json}"/>
+
+        <type detected="java.lang.Short" target="int16${json} -> SetInt16"/>
+        <type detected="java.lang.Integer" target="int32${json} -> SetInt32"/>
+        <type detected="java.lang.Long" target="int64${json} -> SetInt64"/>
+
+        <type detected="java.lang.Float" target="float32${json} -> SetFloat32"/>
+        <type detected="java.lang.Double" target="float64${json} -> SetFloat64"/>
+        <type detected="java.math.BigDecimal" target="float64${json} -> SetFloat64"/>
+
+        <type detected="java.lang.String" target="string${json} -> SetString"/>
+        <type detected="java.util.Date" target="time:time.Time${json} -> SetTime"/>
+        <type detected="byte[]" target="string${json} -> SetBytes"/>
+        <type detected="java.lang.Boolean" target="bool${json} -> SetBool"/>
+
+        <type detected="java.lang.Object" target="interface{}${json}"/>
+
+        <!-- ***** SQLAlchemy ("sqlalchemy-" or "sa-" prefix for detected types) ****************** -->
+
+        <!-- https://github.com/panedrone/sqldalmaker/blob/master/src/resources/data_store_sqlalchemy.py-->
+
+        <!-- Numerics for all except oracle_cx -->
+
+        <type detected="sa-java.lang.Short" target="${sa-type}|0:SmallInteger"/>
+        <type detected="sa-java.lang.Integer" target="${sa-type}|0:Integer"/>
+        <type detected="sa-java.lang.Long" target="${sa-type}|0:BigInteger"/>
+
+        <type detected="sa-java.lang.Float" target="${sa-type}|0:Float"/>
+        <type detected="sa-java.lang.Double" target="${sa-type}|0:Float"/>
+        <type detected="sa-java.math.BigDecimal" target="${sa-type}|0:Float"/>
+
+        <!-- All numerics for oracle_cx -->
+
+        <!--        <type detected="sa-java.math.BigDecimal" target="${sa-type}|0:NUMBER"/>-->
+        <!--        <type detected="sa-java.math.BigDecimal+auto"-->
+        <!--              target="${sa-type}|0:NUMBER|1:, autoincrement=True|comment:  # IDENTITY"/>-->
+
+        <type detected="sa-java.util.Date" target="${sa-type}|0:DateTime"/>
+        <type detected="sa-java.lang.String" target="${sa-type}|0:String"/>
+        <type detected="sa-java.lang.Boolean" target="${sa-type}|0:Boolean"/>
+        <type detected="sa-byte[]" target="${sa-type}|0:LargeBinary"/>
+
+        <type detected="sa-java.lang.Object" target="${sa-type-unknown}"/>
+
+        <!-- ***** Django ("django-" or "dj-" prefix for detected types) ****************** -->
+
+        <type detected="dj-java.lang.Short" target="${dj-type}|0:IntegerField"/>
+        <type detected="dj-java.lang.Integer" target="${dj-type}|0:IntegerField"/>
+        <type detected="dj-java.lang.Long" target="${dj-type}|0:BigIntegerField"/>
+
+        <type detected="dj-java.lang.Float" target="${dj-type}|0:FloatField"/>
+        <type detected="dj-java.lang.Double" target="${dj-type}|0:FloatField"/>
+
+        <type detected="dj-java.math.BigDecimal"
+              target="${dj-type}|0:DecimalField|1:, max_digits=10, decimal_places=2"/>
+        <type detected="dj-java.math.BigDecimal+auto" target="${dj-type}|0:BigAutoField"/>
+
+        <type detected="dj-java.util.Date" target="${dj-type}|0:DateTimeField"/>
+        <type detected="dj-java.lang.String" target="${dj-type}|0:CharField"/>
+        <type detected="dj-java.lang.Boolean" target="${dj-type}|0:BooleanField"/>
+        <type detected="dj-byte[]" target="${dj-type}|0:BinaryField"/>
+
+        <type detected="dj-java.lang.Object"
+              target="${dj-type}|0:TextField"/> <!-- TextField doesn't want max_length -->
+        <!--        <type detected="dj-java.lang.Object" target="${dj-type}|0:CharField|1:, max_length=1024"/>-->
+
+        <type detected="dj-int" target="${dj-type}|0:IntegerField"/>
+        <type detected="dj-long" target="${dj-type}|0:BigIntegerField"/>
+
+        <type detected="dj-float" target="${dj-type}|0:FloatField"/>
+
+        <type detected="dj-date" target="${dj-type}|0:DateTimeField"/>
+        <type detected="dj-str" target="${dj-type}|0:CharField"/>
+        <type detected="dj-bool" target="${dj-type}|0:BooleanField"/>
+        <!--        <type detected="dj-byte[]" target="${dj-type}|0:BinaryField"/> -->
+
+        <type detected="dj-object" target="${dj-type}|0:CharField"/>
+
+        <!-- ******   Python scalar fields, params, and ret-values  ****** -->
+
+        <!--        <type detected="java.lang.Short" target="int"/>-->
+        <!--        <type detected="java.lang.Integer" target="int"/>-->
+        <!--        <type detected="java.lang.Long" target="long"/>-->
+
+        <!--        <type detected="java.lang.Double" target="float"/>-->
+        <!--        <type detected="java.lang.Float" target="float"/>-->
+        <!--        <type detected="java.math.BigDecimal" target="float"/>-->
+
+        <!--        <type detected="java.util.Date" target="str"/>-->
+        <!--        <type detected="java.lang.String" target="str"/>-->
+        <!--        <type detected="java.lang.Boolean" target="bool"/>-->
+        <!--        <type detected="byte[]" target="bytes"/>-->
+        <!--        <type detected="java.lang.Object" target="object"/>-->
+
+        <!-- ******   Python scalar fields, params, and ret-values for Oracle ****** -->
+
+<!--        <type detected="java.lang.Short" target="float"/>-->
+<!--        <type detected="java.lang.Integer" target="float"/>-->
+<!--        <type detected="java.lang.Long" target="float"/>-->
+
+<!--        <type detected="java.lang.Double" target="float"/>-->
+<!--        <type detected="java.lang.Float" target="float"/>-->
+<!--        <type detected="java.math.BigDecimal" target="float"/>-->
+
+<!--        <type detected="java.util.Date" target="datetime.datetime"/>-->
+<!--        <type detected="java.lang.String" target="str"/>-->
+<!--        <type detected="java.lang.Boolean" target="bool"/>-->
+<!--        <type detected="byte[]" target="bytes"/>-->
+
+<!--        <type detected="java.lang.Object" target="object"/>-->
+
+        <!-- ******   PHP Doctrine ORM  ****** -->
+
+        <!-- https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/types.html-->
+
+        <type detected="doctrine-java.lang.Short" target="${doctrine-type}|0:smallint|1:int"/>
+        <type detected="doctrine-java.lang.Integer" target="${doctrine-type}|0:integer|1:int"/>
+        <type detected="doctrine-java.lang.Long" target="${doctrine-type}|0:bigint|1:string"/>
+
+        <type detected="doctrine-java.lang.Float" target="${doctrine-type}|0:float|1:float"/>
+        <type detected="doctrine-java.lang.Double" target="${doctrine-type}|0:float|1:float"/>
+        <type detected="doctrine-java.math.BigDecimal" target="${doctrine-type}|0:decimal|1:string"/>
+
+        <type detected="doctrine-java.util.Date" target="${doctrine-type}|0:datetime|1:\DateTime"/>
+        <type detected="doctrine-java.lang.String" target="${doctrine-type}|0:string|1:string"/>
+        <type detected="doctrine-java.lang.Boolean" target="${doctrine-type}|0:boolean|1:bool"/>
+        <type detected="doctrine-byte[]" target="${doctrine-type}|0:array|1:array"/>
+        <type detected="doctrine-java.lang.Object" target="${doctrine-type}|0:object|1:object"/>
+
+        <!-- ******  PHP scalar fields, params, and ret-values ****** -->
+
+        <!--        <type detected="java.lang.Short" target="int"/>-->
+        <!--        <type detected="java.lang.Integer" target="int"/>-->
+        <!--        <type detected="java.lang.Long" target="int"/>-->
+
+        <!--        <type detected="java.lang.Float" target="float"/>-->
+        <!--        <type detected="java.lang.Double" target="float"/>-->
+        <!--        <type detected="java.math.BigDecimal" target="float"/>-->
+
+        <!--        <type detected="java.util.Date" target="\DateTime"/>-->
+        <!--        <type detected="java.lang.String" target="string"/>-->
+        <!--        <type detected="java.lang.Boolean" target="bool"/>-->
+        <!--        <type detected="byte[]" target="array"/>-->
+        <!--        <type detected="java.lang.Object" target="object"/>-->
+
+        <!-- Example for C++ and SQLite3: -->
+
+        <!--        <type detected="java.lang.Integer" target="CLong"/>-->
+        <!--        <type detected="java.lang.Double" target="CDouble"/>-->
+        <!--        <type detected="java.lang.Float" target="CDouble"/>-->
+        <!--        <type detected="java.lang.String" target="CText"/>-->
+        <!--        <type detected="byte[]" target="CBlob"/>-->
+
+    </type-map>
+
+    <macros>
+
+        <!-- =built-in= is a key-word -->
+
+        <macro value="=built-in=" name="${column}"/>
+        <macro value="=built-in=" name="${lower_snake_case(column)}"/>
+        <macro value="=built-in=" name="${camelCase(column)}"/>
+        <macro value="=built-in=" name="${TitleCase(column)}"/>
+        <macro value="=built-in=" name="${kebab-case(column)}"/>
+
+        <!-- Go tags: -->
+
+        <macro name="${json_col}" value="${lower_snake_case(column)}"/>
+
+        <macro name="${json}" value=" `json:&quot;${json_col}${1}&quot;`"/>
+
+        <!-- Gorm tags: -->
+
+        <macro name="${json-gorm}"
+               value=" `json:&quot;${json_col}${0}&quot; gorm:&quot;column:${column}${gorm-params}&quot;`"/>
+
+        <macro name="${no-gorm}" value=" `gorm:&quot;-&quot;` // not included into INSERT SQL"/>
+
+        <!-- SQLAlchemy column: -->
+
+        <macro name="${sa-type-unknown}" value="${sa-column-base}|type:"/>
+        <macro name="${sa-type}" value="${sa-column-base}|type:, ${0}"/>
+
+        <!-- Django field: -->
+
+        <macro name="${dj-type}" value="${dj-field}"/>
+
+        <!-- In VM-based macros dedicated to render the fields/columns,
+             "$fi" is a predefined variable of class FieldInfo:
+
+                class FieldInfo:
+                    String getName()
+                    String getType()
+                    String getScalarType()
+                    String getColumnName()
+                    int getColumnSize()
+                    boolean isAI()
+                    boolean isPK()
+                    String getFK()
+                    boolean isNullable()
+                    boolean isIndexed()
+                    boolean isUnique()
+                    String getComment()
+                    String getterMethod()
+                    String setterMethod()
+                        -->
+
+        <!-- PHP Doctrine ORM field type: -->
+
+        <!-- https://www.doctrine-project.org/projects/doctrine-orm/en/2.11/reference/attributes-reference.html#attrref_column-->
+
+        <macro name="${doctrine-type}">
+            <vm-xml>
+                <print var="@ORM\Column(name=&quot;${column}&quot;, type=&quot;${0}&quot;"/>
+                <if var="$fi.ColumnSize>0">
+                    <print var=", length=$fi.ColumnSize"/>
+                </if>
+                <if var="!$fi.PK">
+                    <if var="$fi.Unique">
+                        <print var=", unique=true"/>
+                    </if>
+                    <!-- <if var="$fi.Indexed">-->
+                    <!--    <print var=", index=true"/>-->
+                    <!-- </if>-->
+                    <if var="$fi.Nullable">
+                        <print var=", nullable=true"/>
+                    </if>
+                </if>
+                <print var=")"/>
+                <if var="$fi.PK">
+                    <br/>
+                    <br/>
+                    <print var="     * @ORM\Id"/>
+                </if>
+                <if var="$fi.AI">
+                    <br/>
+                    <br/>
+                    <print var="     * @ORM\GeneratedValue"/>
+                </if>
+                <br/>
+                <br/>
+                <print var="     * @var ${1}"/>
+            </vm-xml>
+        </macro>
+
+        <macro name="${gorm-params}">
+            <vm-xml> <!-- https://gorm.io/docs/models.html -->
+                <if var="$fi.PK">
+                    <print var=";primaryKey"/>
+                </if>
+                <if var="$fi.AI">
+                    <print var=";autoIncrement"/>
+                </if>
+                <if var="!$fi.PK">
+                    <if var="$fi.Unique &amp;&amp; $fi.Indexed">
+                        <print var=";uniqueIndex"/>
+                        <else>
+                            <if var="$fi.Unique">
+                                <print var=";unique"/>
+                            </if>
+                            <if var="$fi.Indexed">
+                                <print var=";index"/>
+                            </if>
+                        </else>
+                    </if>
+                    <if var="!$fi.Nullable">
+                        <print var=";not null"/>
+                    </if>
+                </if>
+            </vm-xml>
+        </macro>
+
+        <macro name="${sa-column-base}">
+            <vm>
+                <![CDATA[= Column('${column}'${type}#if($fi.ColumnSize>0)($fi.ColumnSize)#end#if($fi.FK), ForeignKey('$fi.FK')#end
+#if($fi.PK), primary_key=True#end
+#if($fi.AI), autoincrement=True#end
+#if(!$fi.PK)
+#if($fi.Indexed), index=True#end
+#if($fi.Unique), unique=True#end
+#if($fi.Nullable), nullable=True#end
+#end${1})${comment}]]>
+            </vm>
+        </macro>
+
+        <macro name="${dj-field}">
+            <vm>
+                <![CDATA[
+= models.#if($fi.AI)AutoField#else${0}#end(db_column='$fi.ColumnName'#if($fi.ColumnSize>0), max_length=$fi.ColumnSize#end
+#if($fi.PK), primary_key=True#else
+#if($fi.Indexed), db_index=True#end
+#if($fi.Unique), unique=True#end
+#if($fi.Nullable), blank=True, null=True#end
+#end${1})${comment}]]>
+            </vm>
+        </macro>
+
+        <macro name="${sa-column}">
+            <vm-xml>
+                <print var="= Column('${column}'${type}"/>
+                <if var="$fi.ColumnSize>0">
+                    <print var="($fi.ColumnSize)"/>
+                </if>
+                <if var="$fi.FK">
+                    <print var=", ForeignKey('$fi.FK')"/>
+                </if>
+                <if var="$fi.PK">
+                    <print var=", primary_key=True"/>
+                </if>
+                <if var="$fi.AI">
+                    <print var=", autoincrement=True"/>
+                </if>
+                <if var="!$fi.PK">
+                    <if var="$fi.Indexed">
+                        <print var=", index=True"/>
+                    </if>
+                    <if var="$fi.Unique">
+                        <print var=", unique=True"/>
+                    </if>
+                    <if var="$fi.Nullable">
+                        <print var=", nullable=True"/>
+                    </if>
+                </if>
+                <print var=")${comment}"/>
+            </vm-xml>
+        </macro>
+
+        <macro name="${dj-field2}">
+            <vm-xml>
+                <print var="= models."/>
+                <if var="$fi.AI">
+                    <print var="AutoField"/>
+                    <else>
+                        <print var="${0}"/>
+                    </else>
+                </if>
+                <print var="(db_column='$fi.ColumnName'"/>
+                <if var="$fi.isPK()">
+                    <print var=", primary_key=True"/>
+                </if>
+                <if var="$fi.ColumnSize>0">
+                    <print var=", max_length=$fi.ColumnSize"/>
+                </if>
+                <if var="!$fi.PK">
+                    <if var="$fi.Indexed">
+                        <print var=", db_index=True"/>
+                    </if>
+                    <if var="$fi.Unique">
+                        <print var=", unique=True"/>
+                    </if>
+                    <if var="$fi.Nullable">
+                        <print var=", blank=True, null=True"/>
+                    </if>
+                </if>
+                <print var="${1})${comment}"/>
+            </vm-xml>
+        </macro>
+
+    </macros>
+
+</settings>

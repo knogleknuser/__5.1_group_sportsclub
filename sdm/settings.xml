@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="settings.xsd">
+
+    <folders target="src/main/java" sql="dta Generate SQL Sources" />
+
+    <dto scope="generated.dto" inheritance="" field-names-mode="1" macro=""/>
+
+    <dao scope="generated.dao" field-assign-mode="0" macro=""/>
+
+    <ide event-log="true"/>
+
+    <jdbc jar="lib/postgresql-42.6.0.jar" class="org.postgresql.Driver"
+          url="jdbc:postgresql://87.57.196.198:5432/sportsclub" user="postgres" pwd="postgres" />
+
+    <type-map default="">
+    </type-map>
+
+    <macros>
+    </macros>
+
+</settings>

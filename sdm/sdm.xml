@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="sdm.xsd">
+
+<!--    <dto-class name="Task" ref="tasks"/>-->
+    <dto-class name="Member" ref="public.member">
+        <field column="member_id" type="java.lang.Integer"/>
+        <field column="name" type="java.lang.String"/>
+        <field column="address" type="java.lang.String"/>
+        <field column="zip" type="java.lang.Integer"/>
+        <field column="gender" type="java.lang.String"/>
+        <field column="year" type="java.lang.String"/>
+    </dto-class>
+
+    <dto-class name="Registration" ref="public.registration">
+        <field column="member_id" type="java.lang.Integer"/>
+        <field column="team_id" type="java.lang.String"/>
+        <field column="price" type="java.lang.Integer"/>
+    </dto-class>
+
+    <dto-class name="Sport" ref="public.sport">
+        <field column="sport_id" type="java.lang.Integer"/>
+        <field column="sport" type="java.lang.String"/>
+    </dto-class>
+
+    <dto-class name="Team" ref="public.team">
+        <field column="team_id" type="java.lang.String"/>
+        <field column="sport_id" type="java.lang.Integer"/>
+    </dto-class>
+
+    <dto-class name="User" ref="public.users">
+        <field column="users_id" type="java.lang.Integer"/>
+        <field column="username" type="java.lang.String"/>
+        <field column="password" type="java.lang.String"/>
+        <field column="role" type="java.lang.String"/>
+    </dto-class>
+
+    <dto-class name="Zip" ref="public.zip">
+        <field column="zip" type="java.lang.Integer"/>
+        <field column="city" type="java.lang.String"/>
+    </dto-class>
+
+    <dto-class name="MembersDetailed" ref="public.members_detailed">
+        <field column="member_id" type="java.lang.Integer"/>
+        <field column="name" type="java.lang.String"/>
+        <field column="address" type="java.lang.String"/>
+        <field column="city" type="java.lang.String"/>
+        <field column="gender" type="java.lang.String"/>
+        <field column="year" type="java.lang.String"/>
+        <field column="sport" type="java.lang.String"/>
+        <field column="team_id" type="java.lang.String"/>
+        <field column="price" type="java.lang.Integer"/>
+    </dto-class>
+
+    <dto-class name="RegistrationsDetailed" ref="public.registrations_detailed">
+        <field column="member_id" type="java.lang.Integer"/>
+        <field column="name" type="java.lang.String"/>
+        <field column="address" type="java.lang.String"/>
+        <field column="city" type="java.lang.String"/>
+        <field column="gender" type="java.lang.String"/>
+        <field column="year" type="java.lang.String"/>
+        <field column="sport" type="java.lang.String"/>
+        <field column="team_id" type="java.lang.String"/>
+        <field column="price" type="java.lang.Integer"/>
+    </dto-class>
+<!--    <dao-class name="TaskDao">-->
+<!--        <crud dto="Task"/>-->
+<!--    </dao-class>-->
+
+</sdm>

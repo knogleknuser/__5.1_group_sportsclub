@@ -199,4 +199,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij,java,osx,windows,maven
+# End of https://www.toptal.com/developers/gitignore/api/intellij,java,osx,windows,maven!/lib/postgresql-42.6.0.jar/
+!/lib/postgresql-42.6.0.jar/
